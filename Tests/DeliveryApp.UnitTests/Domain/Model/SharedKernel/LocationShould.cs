@@ -81,10 +81,24 @@ public class LocationShould
         var location2 = Location.Create(3, 4).Value;
         
         // Act
-        var distance = location1.DistanceTo(location2);
+        var distance = location1.DistanceTo(location2).Value;
         
         // Assert
         distance.Should().Be(4);
+    }
+    
+    [Fact]
+    public void ReturnErrorWhenNullParamPassedInCalculateDistance()
+    {
+        // Arrange
+        var location1 = Location.Create(1, 2).Value;
+        
+        // Act
+        var distance = location1.DistanceTo(null);
+        
+        // Assert
+        distance.IsFailure.Should().BeTrue();
+        distance.Error.Should().NotBeNull();
     }
     
     [Fact]

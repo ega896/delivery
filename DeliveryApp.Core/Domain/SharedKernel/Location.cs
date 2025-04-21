@@ -31,15 +31,17 @@ public class Location : ValueObject
     {
         if (x < MinCoordinate || x > MaxCoordinate) return GeneralErrors.ValueIsInvalid(nameof(x));
         
-        if (y < MinCoordinate || y > MaxCoordinate ) return GeneralErrors.ValueIsInvalid(nameof(y));
+        if (y < MinCoordinate || y > MaxCoordinate) return GeneralErrors.ValueIsInvalid(nameof(y));
 
         return new Location(x, y);
     }
 
-    public int DistanceTo(Location other)
+    public Result<int, Error> DistanceTo(Location targetLocation)
     {
-        var xDiff = Math.Abs(X - other.X);
-        var yDiff = Math.Abs(Y - other.Y);
+        if (targetLocation == null) return GeneralErrors.ValueIsRequired(nameof(targetLocation));
+        
+        var xDiff = Math.Abs(X - targetLocation.X);
+        var yDiff = Math.Abs(Y - targetLocation.Y);
 
         return xDiff + yDiff;
     }

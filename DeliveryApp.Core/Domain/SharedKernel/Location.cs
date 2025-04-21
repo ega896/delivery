@@ -38,8 +38,6 @@ public class Location : ValueObject
 
     public int DistanceTo(Location other)
     {
-        if (other == null) throw new ArgumentNullException(nameof(other));
-
         var xDiff = Math.Abs(X - other.X);
         var yDiff = Math.Abs(Y - other.Y);
 

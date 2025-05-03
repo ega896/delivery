@@ -10,6 +10,9 @@ namespace DeliveryApp.Core.Domain.Model.CourierAggregate;
 
 public sealed class Transport : Entity<Guid>
 {
+    private const int minSpeed = 1;
+    private const int maxSpeed = 3;
+    
     [ExcludeFromCodeCoverage]
     private Transport()
     {
@@ -31,7 +34,7 @@ public sealed class Transport : Entity<Guid>
     {
         if (string.IsNullOrWhiteSpace(name)) return GeneralErrors.ValueIsRequired(nameof(name));
         
-        if (speed is < 1 or > 3) return GeneralErrors.ValueIsInvalid(nameof(speed));
+        if (speed is < minSpeed or > maxSpeed) return GeneralErrors.ValueIsInvalid(nameof(speed));
 
         return new Transport(name, speed);
     }

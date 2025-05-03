@@ -11,7 +11,7 @@ namespace DeliveryApp.Core.Domain.Model.CourierAggregate;
 public class Courier : Entity<Guid>
 {
     [ExcludeFromCodeCoverage]
-    public Courier()
+    private Courier()
     {
         
     }

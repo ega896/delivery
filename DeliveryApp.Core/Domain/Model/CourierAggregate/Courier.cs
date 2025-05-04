@@ -29,7 +29,7 @@ public class Courier : Entity<Guid>
     
     public Transport Transport { get; }
     
-    public Location Location { get; }
+    public Location Location { get; private set; }
     
     public CourierStatus Status { get; private set; }
     
@@ -52,8 +52,10 @@ public class Courier : Entity<Guid>
         if (Status != CourierStatus.Free) return GeneralErrors.ValueIsInvalid(nameof(Status));
 
         var newLocation = Transport.Move(Location, target).Value;
-        
-        return new Courier(Name, Transport, newLocation);
+
+        Location = newLocation;
+
+        return this;
     }
 
     public Result<Courier, Error> SetFree()

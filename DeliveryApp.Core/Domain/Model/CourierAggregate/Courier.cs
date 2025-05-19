@@ -11,7 +11,7 @@ namespace DeliveryApp.Core.Domain.Model.CourierAggregate;
 public class Courier : Entity<Guid>
 {
     [ExcludeFromCodeCoverage]
-    public Courier()
+    private Courier()
     {
         
     }
@@ -29,7 +29,7 @@ public class Courier : Entity<Guid>
     
     public Transport Transport { get; }
     
-    public Location Location { get; }
+    public Location Location { get; private set; }
     
     public CourierStatus Status { get; private set; }
     
@@ -45,31 +45,33 @@ public class Courier : Entity<Guid>
         return new Courier(name, transportCreationResult.Value, location);
     }
     
-    public Result<Courier, Error> Move(Location target)
+    public UnitResult<Error> Move(Location target)
     {
         if (target == null) return GeneralErrors.ValueIsRequired(nameof(target));
         
         if (Status != CourierStatus.Free) return GeneralErrors.ValueIsInvalid(nameof(Status));
 
         var newLocation = Transport.Move(Location, target).Value;
-        
-        return new Courier(Name, Transport, newLocation);
+
+        Location = newLocation;
+
+        return UnitResult.Success<Error>();
     }
 
-    public Result<Courier, Error> SetFree()
+    public UnitResult<Error> SetFree()
     {
         Status = CourierStatus.Free;
         
-        return this;
+        return UnitResult.Success<Error>();
     }
     
-    public Result<Courier, Error> SetBusy()
+    public UnitResult<Error> SetBusy()
     {
         if (Status != CourierStatus.Free) return GeneralErrors.ValueIsInvalid(nameof(Status));
         
         Status = CourierStatus.Busy;
         
-        return this;
+        return UnitResult.Success<Error>();
     }
 
     public Result<float, Error> CalculateTimeToLocation(Location location)

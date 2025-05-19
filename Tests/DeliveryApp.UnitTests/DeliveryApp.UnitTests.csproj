@@ -26,7 +26,6 @@
 
     <ItemGroup>
       <Folder Include="Application\" />
-      <Folder Include="Domain\Services\" />
     </ItemGroup>
 
 </Project>

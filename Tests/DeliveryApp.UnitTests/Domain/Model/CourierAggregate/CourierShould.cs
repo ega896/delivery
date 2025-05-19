@@ -65,15 +65,15 @@ public class CourierShould
         const string transportName = "car";
         const int transportSpeed = 3;
         var location = Location.Create(1, 1).Value;
-        var courier = Courier.Create(name, transportName, transportSpeed, location);
+        var courier = Courier.Create(name, transportName, transportSpeed, location).Value;
         var target = Location.Create(3, 3).Value;
         
         // Act
-        var movedCourier = courier.Value.Move(target);
+        var movedCourier = courier.Move(target);
         
         // Assert
         movedCourier.IsSuccess.Should().BeTrue();
-        movedCourier.Value.Location.Should().Be(Location.Create(3, 2).Value);
+        courier.Location.Should().Be(Location.Create(3, 2).Value);
     }
     
     [Fact]
@@ -101,14 +101,14 @@ public class CourierShould
         const string transportName = "car";
         const int transportSpeed = 3;
         var location = Location.Create(1, 1).Value;
-        var courier = Courier.Create(name, transportName, transportSpeed, location);
+        var courier = Courier.Create(name, transportName, transportSpeed, location).Value;
         
         // Act
-        var result = courier.Value.SetFree();
+        var result = courier.SetFree();
         
         // Assert
         result.IsSuccess.Should().BeTrue();
-        result.Value.Status.Should().Be(CourierStatus.Free);
+        courier.Status.Should().Be(CourierStatus.Free);
     }
     
     [Fact]
@@ -119,14 +119,14 @@ public class CourierShould
         const string transportName = "car";
         const int transportSpeed = 3;
         var location = Location.Create(1, 1).Value;
-        var courier = Courier.Create(name, transportName, transportSpeed, location);
+        var courier = Courier.Create(name, transportName, transportSpeed, location).Value;
         
         // Act
-        var result = courier.Value.SetBusy();
+        var result = courier.SetBusy();
         
         // Assert
         result.IsSuccess.Should().BeTrue();
-        result.Value.Status.Should().Be(CourierStatus.Busy);
+        courier.Status.Should().Be(CourierStatus.Busy);
     }
     
     [Fact]
@@ -137,11 +137,11 @@ public class CourierShould
         const string transportName = "car";
         const int transportSpeed = 3;
         var location = Location.Create(1, 1).Value;
-        var courier = Courier.Create(name, transportName, transportSpeed, location);
-        var busyCourier = courier.Value.SetBusy();
+        var courier = Courier.Create(name, transportName, transportSpeed, location).Value;
+        courier.SetBusy();
         
         // Act
-        var result = busyCourier.Value.SetBusy();
+        var result = courier.SetBusy();
         
         // Assert
         result.IsSuccess.Should().BeFalse();

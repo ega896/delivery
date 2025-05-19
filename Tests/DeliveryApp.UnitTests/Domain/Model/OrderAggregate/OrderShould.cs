@@ -56,16 +56,16 @@ public class OrderShould
         // Arrange
         var id = Guid.NewGuid();
         var location = Location.Create(1, 1).Value;
-        var order = Order.Create(id, location);
+        var order = Order.Create(id, location).Value;
         var courierId = Guid.NewGuid();
         
         // Act
-        var result = order.Value.Assign(courierId);
+        var result = order.Assign(courierId);
         
         // Assert
         result.IsSuccess.Should().BeTrue();
-        result.Value.CourierId.Should().Be(courierId);
-        result.Value.Status.Should().Be(OrderStatus.Assigned);
+        order.CourierId.Should().Be(courierId);
+        order.Status.Should().Be(OrderStatus.Assigned);
     }
     
     [Fact]
@@ -110,17 +110,17 @@ public class OrderShould
         // Arrange
         var id = Guid.NewGuid();
         var location = Location.Create(1, 1).Value;
-        var order = Order.Create(id, location);
+        var order = Order.Create(id, location).Value;
         var courierId = Guid.NewGuid();
         
-        order.Value.Assign(courierId);
+        order.Assign(courierId);
         
         // Act
-        var result = order.Value.Complete();
+        var result = order.Complete();
         
         // Assert
         result.IsSuccess.Should().BeTrue();
-        result.Value.Status.Should().Be(OrderStatus.Completed);
+        order.Status.Should().Be(OrderStatus.Completed);
     }
     
     [Fact]

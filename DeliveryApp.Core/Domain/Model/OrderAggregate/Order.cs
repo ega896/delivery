@@ -38,7 +38,7 @@ public class Order : Entity<Guid>
         return new Order(id, location);
     }
     
-    public Result<Order, Error> Assign(Guid courierId)
+    public UnitResult<Error> Assign(Guid courierId)
     {
         if (courierId == Guid.Empty) return GeneralErrors.ValueIsRequired(nameof(courierId));
         
@@ -47,15 +47,15 @@ public class Order : Entity<Guid>
         CourierId = courierId;
         Status = OrderStatus.Assigned;
 
-        return this;
+        return UnitResult.Success<Error>();;
     }
     
-    public Result<Order, Error> Complete()
+    public UnitResult<Error> Complete()
     {
         if (Status != OrderStatus.Assigned) return GeneralErrors.ValueIsInvalid(nameof(Status));
 
         Status = OrderStatus.Completed;
 
-        return this;
+        return UnitResult.Success<Error>();;
     }
 }

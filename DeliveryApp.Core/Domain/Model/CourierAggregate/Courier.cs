@@ -45,7 +45,7 @@ public class Courier : Entity<Guid>
         return new Courier(name, transportCreationResult.Value, location);
     }
     
-    public Result<Courier, Error> Move(Location target)
+    public UnitResult<Error> Move(Location target)
     {
         if (target == null) return GeneralErrors.ValueIsRequired(nameof(target));
         
@@ -55,23 +55,23 @@ public class Courier : Entity<Guid>
 
         Location = newLocation;
 
-        return this;
+        return UnitResult.Success<Error>();
     }
 
-    public Result<Courier, Error> SetFree()
+    public UnitResult<Error> SetFree()
     {
         Status = CourierStatus.Free;
         
-        return this;
+        return UnitResult.Success<Error>();
     }
     
-    public Result<Courier, Error> SetBusy()
+    public UnitResult<Error> SetBusy()
     {
         if (Status != CourierStatus.Free) return GeneralErrors.ValueIsInvalid(nameof(Status));
         
         Status = CourierStatus.Busy;
         
-        return this;
+        return UnitResult.Success<Error>();
     }
 
     public Result<float, Error> CalculateTimeToLocation(Location location)

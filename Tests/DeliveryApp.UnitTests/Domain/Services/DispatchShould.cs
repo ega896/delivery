@@ -21,8 +21,8 @@ public class DispatchShould
         yield return [Order.Create(Guid.NewGuid(), Location.Create(5, 5).Value).Value, new List<Courier>()];
         
         var courier = Courier.Create("Ivan", "car", 3, Location.Create(1, 1).Value).Value;
-        var busyCourier = courier.SetBusy().Value;
-        yield return [Order.Create(Guid.NewGuid(), Location.Create(5, 5).Value).Value, new List<Courier> { busyCourier }];
+        courier.SetBusy();
+        yield return [Order.Create(Guid.NewGuid(), Location.Create(5, 5).Value).Value, new List<Courier> { courier }];
     }
     
     [Fact]

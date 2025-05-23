@@ -8,7 +8,7 @@ using Primitives;
 
 namespace DeliveryApp.Core.Domain.Model.CourierAggregate;
 
-public class Courier : Entity<Guid>
+public class Courier : Aggregate<Guid>
 {
     [ExcludeFromCodeCoverage]
     private Courier()

@@ -31,7 +31,7 @@ public class OrderShould
         // Assert
         order.IsSuccess.Should().BeTrue();
         order.Value.Id.Should().Be(id);
-        order.Value.CourierId.Should().Be(Guid.Empty);
+        order.Value.CourierId.Should().Be(null);
         order.Value.Status.Should().Be(OrderStatus.Created);
         order.Value.Location.Should().Be(location);
     }

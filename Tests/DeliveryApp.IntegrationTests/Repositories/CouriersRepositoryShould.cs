@@ -14,7 +14,7 @@ public class CouriersRepositoryShould : IAsyncLifetime
 {
     private readonly PostgreSqlContainer _postgreSqlContainer = new PostgreSqlBuilder()
         .WithImage("postgres:17.5")
-        .WithDatabase("order")
+        .WithDatabase("couriers")
         .WithUsername("username")
         .WithPassword("secret")
         .WithCleanUp(true)

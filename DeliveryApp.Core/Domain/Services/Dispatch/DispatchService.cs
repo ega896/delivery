@@ -16,7 +16,7 @@ public class DispatchService : IDispatchService
         if (couriers == null || couriers.Count == 0) return GeneralErrors.ValueIsRequired(nameof(couriers));
         
         var freeCouriers = couriers.Where(c => c.Status == CourierStatus.Free).ToList();
-        if (freeCouriers.Count == 0) return DispatchErrors.NoFreeCouriers(order.Id);
+        if (freeCouriers.Count == 0) return CouriersErrors.NoFreeCouriers();
         
         var closestCourier = freeCouriers
             .OrderBy(c => c.CalculateTimeToLocation(order.Location).Value)
@@ -29,14 +29,5 @@ public class DispatchService : IDispatchService
         if (courierSetBusyResult.IsFailure) return courierSetBusyResult.Error;
 
         return closestCourier;
-    }
-    
-    private static class DispatchErrors
-    {
-        public static Error NoFreeCouriers(Guid orderId)
-        {
-            if (orderId == Guid.Empty) throw new ArgumentException(nameof(orderId));
-            return new Error("dispatch.error", $"No free couriers available for order {orderId}.");
-        }
     }
 }

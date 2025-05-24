@@ -1,0 +1,259 @@
+{
+  "openapi" : "3.0.0",
+  "info" : {
+    "description" : "Отвечает за учет курьеров, деспетчеризацию доставок, доставку",
+    "title" : "Swagger Delivery",
+    "version" : "1.0.0"
+  },
+  "servers" : [ {
+    "url" : "/"
+  } ],
+  "paths" : {
+    "/api/v1/orders" : {
+      "post" : {
+        "description" : "Позволяет создать заказ с целью тестирования",
+        "operationId" : "CreateOrder",
+        "responses" : {
+          "201" : {
+            "description" : "Успешный ответ"
+          },
+          "default" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Error"
+                }
+              }
+            },
+            "description" : "Ошибка"
+          }
+        },
+        "summary" : "Создать заказ"
+      }
+    },
+    "/api/v1/orders/active" : {
+      "get" : {
+        "description" : "Позволяет получить все незавершенные заказы",
+        "operationId" : "GetOrders",
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "items" : {
+                    "$ref" : "#/components/schemas/Order"
+                  },
+                  "type" : "array"
+                }
+              }
+            },
+            "description" : "Успешный ответ"
+          },
+          "default" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Error"
+                }
+              }
+            },
+            "description" : "Ошибка"
+          }
+        },
+        "summary" : "Получить все незавершенные заказы"
+      }
+    },
+    "/api/v1/couriers" : {
+      "get" : {
+        "description" : "Позволяет получить всех курьеров",
+        "operationId" : "GetCouriers",
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "items" : {
+                    "$ref" : "#/components/schemas/Courier"
+                  },
+                  "type" : "array"
+                }
+              }
+            },
+            "description" : "Успешный ответ"
+          },
+          "default" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Error"
+                }
+              }
+            },
+            "description" : "Ошибка"
+          }
+        },
+        "summary" : "Получить всех курьеров"
+      },
+      "post" : {
+        "description" : "Позволяет добавить курьера",
+        "operationId" : "CreateCourier",
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/NewCourier"
+              }
+            }
+          },
+          "description" : "Курьер"
+        },
+        "responses" : {
+          "201" : {
+            "description" : "Успешный ответ"
+          },
+          "default" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Error"
+                }
+              }
+            },
+            "description" : "Ошибка"
+          },
+          "400" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Error"
+                }
+              }
+            },
+            "description" : "Ошибка валидации"
+          },
+          "409" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Error"
+                }
+              }
+            },
+            "description" : "Ошибка выполнения бизнес логики"
+          }
+        },
+        "summary" : "Добавить курьера"
+      }
+    }
+  },
+  "components" : {
+    "schemas" : {
+      "Location" : {
+        "example" : {
+          "x" : 0,
+          "y" : 0
+        },
+        "properties" : {
+          "x" : {
+            "description" : "X",
+            "minimum" : 0,
+            "type" : "integer"
+          },
+          "y" : {
+            "description" : "Y",
+            "minimum" : 0,
+            "type" : "integer"
+          }
+        },
+        "required" : [ "x", "y" ],
+        "type" : "object"
+      },
+      "Order" : {
+        "example" : {
+          "location" : {
+            "x" : 0,
+            "y" : 0
+          },
+          "id" : "046b6c7f-0b8a-43b9-b35d-6489e6daee91"
+        },
+        "properties" : {
+          "id" : {
+            "description" : "Идентификатор",
+            "format" : "uuid",
+            "type" : "string"
+          },
+          "location" : {
+            "$ref" : "#/components/schemas/Location"
+          }
+        },
+        "required" : [ "id", "location" ],
+        "type" : "object"
+      },
+      "NewCourier" : {
+        "example" : {
+          "name" : "name",
+          "speed" : 1
+        },
+        "properties" : {
+          "name" : {
+            "description" : "Имя",
+            "minLength" : 1,
+            "type" : "string"
+          },
+          "speed" : {
+            "description" : "Скорость",
+            "minimum" : 1,
+            "type" : "integer"
+          }
+        },
+        "required" : [ "name", "speed" ],
+        "type" : "object"
+      },
+      "Courier" : {
+        "example" : {
+          "name" : "name",
+          "location" : {
+            "x" : 0,
+            "y" : 0
+          },
+          "id" : "046b6c7f-0b8a-43b9-b35d-6489e6daee91"
+        },
+        "properties" : {
+          "id" : {
+            "description" : "Идентификатор",
+            "format" : "uuid",
+            "type" : "string"
+          },
+          "name" : {
+            "description" : "Имя",
+            "type" : "string"
+          },
+          "location" : {
+            "$ref" : "#/components/schemas/Location"
+          }
+        },
+        "required" : [ "id", "location", "name" ],
+        "type" : "object"
+      },
+      "Error" : {
+        "example" : {
+          "code" : 0,
+          "message" : "message"
+        },
+        "properties" : {
+          "code" : {
+            "description" : "Код ошибки",
+            "format" : "int32",
+            "type" : "integer"
+          },
+          "message" : {
+            "description" : "Текст ошибки",
+            "type" : "string"
+          }
+        },
+        "required" : [ "code", "message" ],
+        "type" : "object"
+      }
+    }
+  }
+}

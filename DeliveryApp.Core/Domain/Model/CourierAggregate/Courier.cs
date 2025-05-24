@@ -49,8 +49,6 @@ public class Courier : Aggregate<Guid>
     {
         if (target == null) return GeneralErrors.ValueIsRequired(nameof(target));
         
-        if (Status != CourierStatus.Free) return GeneralErrors.ValueIsInvalid(nameof(Status));
-
         var newLocation = Transport.Move(Location, target).Value;
 
         Location = newLocation;

@@ -8,7 +8,7 @@ using Primitives;
 
 namespace DeliveryApp.Core.Domain.Model.OrderAggregate;
 
-public class Order : Entity<Guid>
+public class Order : Aggregate<Guid>
 {
     [ExcludeFromCodeCoverage]
     private Order()
@@ -23,7 +23,7 @@ public class Order : Entity<Guid>
         Location = location;
     }
     
-    public Guid CourierId { get; private set; }
+    public Guid? CourierId { get; private set; }
     
     public OrderStatus Status { get; private set; }
     
@@ -47,7 +47,7 @@ public class Order : Entity<Guid>
         CourierId = courierId;
         Status = OrderStatus.Assigned;
 
-        return UnitResult.Success<Error>();;
+        return UnitResult.Success<Error>();
     }
     
     public UnitResult<Error> Complete()
@@ -56,6 +56,6 @@ public class Order : Entity<Guid>
 
         Status = OrderStatus.Completed;
 
-        return UnitResult.Success<Error>();;
+        return UnitResult.Success<Error>();
     }
 }

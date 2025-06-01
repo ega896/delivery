@@ -12,5 +12,5 @@ public interface ICouriersRepository : IRepository<Courier>
     
     Task<Maybe<Courier>> GetAsync(Guid courierId);
     
-    IEnumerable<Courier> GetAllFree();
+    Task<IReadOnlyCollection<Courier>> GetAllFree();
 }

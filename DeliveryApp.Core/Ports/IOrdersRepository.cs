@@ -14,5 +14,5 @@ public interface IOrdersRepository : IRepository<Order>
     
     Task<Maybe<Order>> GetFirstCreatedAsync();
     
-    IEnumerable<Order> GetAllAssigned();
+    Task<IReadOnlyCollection<Order>> GetAllAssigned();
 }

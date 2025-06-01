@@ -120,12 +120,11 @@ public class CouriersRepositoryShould : IAsyncLifetime
         await unitOfWork.SaveChangesAsync();
 
         // Act
-        var activeCouriersFromDb = courierRepository.GetAllFree();
+        var activeCouriers = await courierRepository.GetAllFree();
 
         // Assert
-        var couriersFromDb = activeCouriersFromDb.ToList();
-        couriersFromDb.Should().NotBeEmpty();
-        couriersFromDb.Count.Should().Be(1);
-        couriersFromDb.First().Should().BeEquivalentTo(secondCourier);
+        activeCouriers.Should().NotBeEmpty();
+        activeCouriers.Count.Should().Be(1);
+        activeCouriers.First().Should().BeEquivalentTo(secondCourier);
     }
 }

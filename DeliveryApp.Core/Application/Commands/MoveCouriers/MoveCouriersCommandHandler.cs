@@ -13,7 +13,7 @@ public class MoveCouriersCommandHandler(
 {
     public async Task<UnitResult<Error>> Handle(MoveCouriersCommand request, CancellationToken cancellationToken)
     {
-        var assignedOrders = ordersRepository.GetAllAssigned().ToList();
+        var assignedOrders = await ordersRepository.GetAllAssigned();
         if (assignedOrders.Count == 0) return UnitResult.Success<Error>();
 
         foreach (var assignedOrder in assignedOrders)

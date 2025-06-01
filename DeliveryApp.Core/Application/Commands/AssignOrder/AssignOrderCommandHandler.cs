@@ -20,7 +20,7 @@ public class AssignOrderCommandHandler(
         if (getUnassignedOrderResult.HasNoValue) return UnitResult.Success<Error>();
         var unassignedOrder = getUnassignedOrderResult.Value;
 
-        var freeCouriers = couriersRepository.GetAllFree().ToList();
+        var freeCouriers = await couriersRepository.GetAllFree();
         if (freeCouriers.Count == 0) return CouriersErrors.NoFreeCouriers();
         
         var dispatchOrderResult = dispatchService.Dispatch(unassignedOrder, freeCouriers);

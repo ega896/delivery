@@ -11,6 +11,7 @@ using DeliveryApp.Core.Application.Queries.GetCouriers;
 using DeliveryApp.Core.Application.Queries.GetUncompletedOrders;
 using DeliveryApp.Core.Domain.Services.Dispatch;
 using DeliveryApp.Core.Ports;
+using DeliveryApp.Infrastructure.Adapters.Grpc.AddressesService;
 using DeliveryApp.Infrastructure.Adapters.Postgres;
 using DeliveryApp.Infrastructure.Adapters.Postgres.Migrations;
 using DeliveryApp.Infrastructure.Adapters.Postgres.Repositories;
@@ -145,6 +146,10 @@ builder.Services.AddSwaggerGen(options =>
 });
 
 builder.Services.AddSwaggerGenNewtonsoftSupport();
+
+// gRPC
+builder.Services.AddScoped<IGeoService, GeoService>();
+
 
 var app = builder.Build();
 

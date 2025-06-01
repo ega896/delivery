@@ -2,6 +2,7 @@ using System.Reflection;
 using CSharpFunctionalExtensions;
 using DeliveryApp.Api;
 using DeliveryApp.Api.Adapters.BackgroundJobs;
+using DeliveryApp.Api.Adapters.Kafka.BasketConfirmed;
 using DeliveryApp.Core.Application.Commands.AssignOrder;
 using DeliveryApp.Core.Application.Commands.CreateCourier;
 using DeliveryApp.Core.Application.Commands.CreateOrder;
@@ -150,6 +151,14 @@ builder.Services.AddSwaggerGenNewtonsoftSupport();
 // gRPC
 builder.Services.AddScoped<IGeoService, GeoService>();
 
+// Kafka
+builder.Services.Configure<HostOptions>(options =>
+{
+    options.BackgroundServiceExceptionBehavior = BackgroundServiceExceptionBehavior.Ignore;
+    options.ShutdownTimeout = TimeSpan.FromSeconds(30);
+});
+
+builder.Services.AddHostedService<BasketConfirmedConsumerService>();
 
 var app = builder.Build();
 

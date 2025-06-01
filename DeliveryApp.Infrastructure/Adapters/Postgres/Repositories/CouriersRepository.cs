@@ -28,11 +28,12 @@ public class CouriersRepository(ApplicationDbContext dbContext) : ICouriersRepos
         return courier;
     }
 
-    public IEnumerable<Courier> GetAllFree()
+    public async Task<IReadOnlyCollection<Courier>> GetAllFree()
     {
-        var couriers = _dbContext.Couriers
+        var couriers = await _dbContext.Couriers
             .Include(x => x.Transport)
-            .Where(o => o.Status.Name == CourierStatus.Free.Name);
+            .Where(o => o.Status.Name == CourierStatus.Free.Name)
+            .ToListAsync();
         
         return couriers;
     }

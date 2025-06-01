@@ -55,4 +55,9 @@
     <ItemGroup>
       <Folder Include="Adapters\Http\Contract\" />
     </ItemGroup>
+    <ItemGroup>
+      <Protobuf Include="Adapters\Kafka\BasketConfirmed\Contract.proto">
+        <Generator>MSBuild:Compile</Generator>
+      </Protobuf>
+    </ItemGroup>
 </Project>

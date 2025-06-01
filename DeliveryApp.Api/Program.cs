@@ -1,9 +1,17 @@
+using System.Reflection;
+using CSharpFunctionalExtensions;
 using DeliveryApp.Api;
+using DeliveryApp.Core.Application.Commands.AssignOrder;
+using DeliveryApp.Core.Application.Commands.CreateOrder;
+using DeliveryApp.Core.Application.Commands.MoveCouriers;
+using DeliveryApp.Core.Application.Queries.GetBusyCouriers;
+using DeliveryApp.Core.Application.Queries.GetUncompletedOrders;
 using DeliveryApp.Core.Domain.Services.Dispatch;
 using DeliveryApp.Core.Ports;
 using DeliveryApp.Infrastructure.Adapters.Postgres;
 using DeliveryApp.Infrastructure.Adapters.Postgres.Migrations;
 using DeliveryApp.Infrastructure.Adapters.Postgres.Repositories;
+using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Primitives;
 
@@ -43,9 +51,23 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 
+// Repositories
 builder.Services.AddScoped<ICouriersRepository, CouriersRepository>();
 builder.Services.AddScoped<IOrdersRepository, OrdersRepository>();
 
+builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly()));
+
+// Commands
+builder.Services.AddScoped<IRequestHandler<CreateOrderCommand, UnitResult<Error>>, CreateOrderCommandHandler>();
+builder.Services.AddScoped<IRequestHandler<MoveCouriersCommand, UnitResult<Error>>, MoveCouriersCommandHandler>();
+builder.Services.AddScoped<IRequestHandler<AssignOrderCommand, UnitResult<Error>>, AssignOrderCommandHandler>();
+
+// Queries
+builder.Services.AddScoped<IRequestHandler<GetUncompletedOrdersQuery, GetUncomplitedOrdersResponse>>(_ => 
+    new GetUncompletedOrdersQueryHandler(connectionString));
+
+builder.Services.AddScoped<IRequestHandler<GetBusyCouriersQuery, GetBusyCouriersResponse>>(_ => 
+    new GetBusyCouriersQueryHandler(connectionString));
 
 var app = builder.Build();
 
